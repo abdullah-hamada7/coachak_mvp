@@ -1,0 +1,67 @@
+# Hammer Curl — front or side camera, both arms averaged
+name: hammer_curl
+display_name: "Hammer Curl"
+type: repetition
+camera_mode: auto
+bilateral: true
+angle_strategy: average
+
+target_muscles:
+  - Biceps
+  - Brachialis
+  - Forearms
+equipment: "Dumbbells"
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+rest_time: "60 seconds"
+
+angles:
+  primary:
+    points: [left_shoulder, left_elbow, left_wrist]
+  right_arm:
+    points: [right_shoulder, right_elbow, right_wrist]
+
+state_order:
+  - flex
+  - curl
+  - down
+
+states:
+  down:
+    condition: "angle > 140"
+  curl:
+    condition: "angle > 85 and angle <= 140"
+  flex:
+    condition: "angle <= 85"
+
+# Additional angles for movement validation
+validate_angles:
+  left_shoulder_angle:
+    points: [left_hip, left_shoulder, left_elbow]
+    description: "Sol kol-gövde açısı (lateral raise tespiti)"
+  right_shoulder_angle:
+    points: [right_hip, right_shoulder, right_elbow]
+    description: "Sağ kol-gövde açısı (lateral raise tespiti)"
+
+# Movement validation
+validation:
+  arms_stay_at_side:
+    condition: "left_shoulder_angle < 30 and right_shoulder_angle < 30"
+    description: "Kollar vücuda yakın olmalı"
+
+counter:
+  trigger_state: flex
+  from_state: curl
+
+min_rep_duration: 0.6
+
+smoothing:
+  enabled: true
+  window: 4
+
+feedback:
+  partial_rep:
+    condition: "angle > 95"
+    message: "اضغط جيداً في الأعلى ثم نزّل ببطء."
+    severity: info

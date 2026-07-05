@@ -1,0 +1,79 @@
+# Tricep Dip Exercise Definition
+name: tricep_dip
+display_name: "Tricep Dip"
+type: repetition
+angle_strategy: primary
+camera_mode: auto
+
+target_muscles:
+  - Triceps
+  - Shoulders
+  - Chest
+equipment: "Chair or Bench"
+difficulty: intermediate
+default_reps: 10
+default_sets: 3
+description: "Chair or bench dips for tricep strength"
+
+angles:
+  primary:
+    points: [left_shoulder, left_elbow, left_wrist]
+    description: "Dirsek açısı"
+
+state_order:
+  - up
+  - lower
+  - down
+
+states:
+  up:
+    condition: "angle > 160"
+    description: "Kollar düz"
+  
+  lower:
+    condition: "angle > 90 and angle <= 160"
+    description: "İniş"
+  
+  down:
+    condition: "angle <= 90"
+    description: "Alt pozisyon"
+
+# Additional angles for movement validation
+validate_angles:
+  left_leg_check:
+    points: [left_hip, left_knee, left_ankle]
+    description: "Sol bacak açısı (bacak hareketi tespiti)"
+  right_leg_check:
+    points: [right_hip, right_knee, right_ankle]
+    description: "Sağ bacak açısı (bacak hareketi tespiti)"
+
+# Movement validation — rejects non-tricep-dip movements
+validation:
+  legs_extended:
+    condition: "left_leg_check > 160 and right_leg_check > 160"
+    description: "Bacaklar düz kalmalı (tricep dip için)"
+
+counter:
+  trigger_state: up
+  from_state: down
+
+min_rep_duration: 0.8
+
+feedback:
+  shallow:
+    condition: "angle > 100"
+    message: "انزل أعمق حتى زاوية 90° في المرفق."
+    severity: info
+
+visualization:
+  lines:
+    - points: [left_shoulder, left_elbow]
+      color: [255, 165, 0]
+      thickness: 4
+    - points: [left_elbow, left_wrist]
+      color: [255, 165, 0]
+      thickness: 4
+
+smoothing:
+  enabled: true
+  window: 3

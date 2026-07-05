@@ -1,0 +1,76 @@
+name: straight_leg_raise
+display_name: "Straight Leg Raise"
+type: repetition
+angle_strategy: primary
+camera_mode: auto
+
+target_muscles:
+  - Hip Flexors
+  - Quads
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+description: "Hip flexion with extended knee for rehab"
+
+angles:
+  primary:
+    points: [left_shoulder, left_hip, left_knee]
+
+state_order:
+  - rest
+  - raise
+  - hold
+
+states:
+  rest:
+    condition: "angle > 160"
+  raise:
+    condition: "angle > 130 and angle <= 160"
+  hold:
+    condition: "angle <= 130"
+
+# Additional angles for movement validation
+validate_angles:
+  elbow_check:
+    points: [left_shoulder, left_elbow, left_wrist]
+    description: "Dirsek açısı (kol hareketi tespiti)"
+  leg_extend_check:
+    points: [left_hip, left_knee, left_ankle]
+    description: "Bacak düzlük kontrolü"
+
+# Movement validation — rejects non-straight-leg-raise movements
+validation:
+  arms_extended:
+    condition: "elbow_check > 150"
+    description: "Kollar düz kalmalı"
+  knee_straight:
+    condition: "leg_extend_check > 170"
+    description: "Diz düz kalmalı (bacak bükülmemeli)"
+
+counter:
+  trigger_state: rest
+  from_state: raise
+
+min_rep_duration: 0.8
+
+feedback:
+  keep_straight:
+    condition: "angle > 145 and angle < 155"
+    message: "حافظ على استقامة الساق بالكامل."
+    severity: warning
+  hip_control:
+    condition: "left_hip_x > right_hip_x + 30"
+    message: "تحكم في دوران الورك — لا تلف الجذع."
+    severity: warning
+
+form_score:
+  ideal_angles:
+    primary: 130
+  tempo_range:
+    min: 1.5
+    max: 4.0
+
+smoothing:
+  enabled: true
+  window: 3

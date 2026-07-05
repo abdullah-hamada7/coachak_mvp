@@ -1,0 +1,107 @@
+# Lateral Raise Exercise Definition
+
+name: lateral_raise
+display_name: "Lateral Raise"
+type: repetition
+camera_mode: auto
+
+target_muscles:
+  - Shoulders (Lateral Deltoid)
+  - Upper Trapezius
+equipment: "Dumbbells"
+difficulty: beginner
+default_reps: 12
+default_sets: 3
+rest_time: "45 seconds"
+benefits:
+  - "Builds shoulder width"
+  - "Improves shoulder stability"
+  - "Isolates lateral deltoid"
+description: "Side raise for shoulder development"
+
+angles:
+  primary:
+    points: [left_hip, left_shoulder, left_elbow]
+    description: "Sol kol-gövde açısı"
+  
+  right_arm:
+    points: [right_hip, right_shoulder, right_elbow]
+    description: "Sağ kol-gövde açısı"
+
+state_order:
+  - top
+  - raise
+  - start
+
+states:
+  start:
+    condition: "angle < 30"
+    description: "Başlangıç - kollar yanda"
+  
+  raise:
+    condition: "angle >= 30 and angle < 80"
+    description: "Kaldırma aşaması"
+  
+  top:
+    condition: "angle >= 80"
+    description: "Üst pozisyon - omuz hizası"
+
+# Additional angles for movement validation
+validate_angles:
+  left_elbow_angle:
+    points: [left_shoulder, left_elbow, left_wrist]
+    description: "Sol dirsek açısı (bicep curl tespiti)"
+  right_elbow_angle:
+    points: [right_shoulder, right_elbow, right_wrist]
+    description: "Sağ dirsek açısı (bicep curl tespiti)"
+
+# Movement validation — rejects non-raise movements
+validation:
+  arms_stay_extended:
+    condition: "left_elbow_angle > 120 and right_elbow_angle > 120"
+    description: "Dirsekler çok bükülmemeli"
+
+counter:
+  trigger_state: top
+  from_state: raise
+
+min_rep_duration: 0.6
+
+feedback:
+  swinging:
+    condition: "abs(left_hip_y - right_hip_y) > 30"
+    message: "تجنّب التأرجح — حرّك ببطء وتحكم."
+    severity: warning
+  
+  too_high:
+    condition: "angle > 100"
+    message: "لا ترفع الذراعين فوق مستوى الكتف."
+    severity: warning
+  
+  bent_elbows:
+    condition: "angle > 40 and abs(left_shoulder_x - left_wrist_x) < 50"
+    message: "أبقِ مرفقيك مثنيتين قليلاً — لا تفرّغهما بالكامل."
+    severity: info
+
+calibration:
+  enabled: true
+  reps: 3
+
+smoothing:
+  enabled: true
+  window: 3
+
+visualization:
+  lines:
+    - points: [left_shoulder, left_elbow]
+      color: [147, 112, 219]
+      thickness: 3
+    - points: [left_elbow, left_wrist]
+      color: [147, 112, 219]
+      thickness: 3
+    - points: [right_shoulder, right_elbow]
+      color: [147, 112, 219]
+      thickness: 3
+    - points: [right_elbow, right_wrist]
+      color: [147, 112, 219]
+      thickness: 3

@@ -1,0 +1,66 @@
+name: heel_slides
+display_name: "Heel Slides"
+type: repetition
+angle_strategy: primary
+camera_mode: auto
+
+target_muscles:
+  - Knee Flexors
+  - Post-surgical Rehab
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+description: "Post-surgical knee flexion rehabilitation"
+
+angles:
+  primary:
+    points: [left_hip, left_knee, left_ankle]
+
+state_order:
+  - extend
+  - flex
+  - bend
+
+states:
+  extend:
+    condition: "angle > 155"
+  flex:
+    condition: "angle > 120 and angle <= 155"
+  bend:
+    condition: "angle <= 120"
+
+# Additional angles for movement validation
+validate_angles:
+  elbow_check:
+    points: [left_shoulder, left_elbow, left_wrist]
+    description: "Dirsek açısı (kol hareketi tespiti)"
+
+# Movement validation — rejects non-heel-slide movements
+validation:
+  arms_extended:
+    condition: "elbow_check > 150"
+    description: "Kollar düz kalmalı (heel slide için)"
+
+counter:
+  trigger_state: extend
+  from_state: flex
+
+min_rep_duration: 0.7
+
+feedback:
+  slow_movement:
+    condition: "angle > 130 and angle < 150"
+    message: "حرّك الكعب ببطء نحو المؤخرة."
+    severity: info
+
+form_score:
+  ideal_angles:
+    primary: 120
+  tempo_range:
+    min: 1.5
+    max: 4.0
+
+smoothing:
+  enabled: true
+  window: 3

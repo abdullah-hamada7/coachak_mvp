@@ -1,0 +1,83 @@
+# Mountain Climber Exercise Definition
+name: mountain_climber
+display_name: "Mountain Climber"
+type: repetition
+camera_mode: auto
+bilateral: true
+sides:
+  - left
+  - right
+
+target_muscles:
+  - Core
+  - Hip Flexors
+  - Shoulders
+equipment: "Bodyweight"
+difficulty: intermediate
+default_reps: 20
+default_sets: 3
+description: "Dynamic cardio with alternating knee drives"
+
+angles:
+  left:
+    points: [left_shoulder, left_hip, left_knee]
+  right:
+    points: [right_shoulder, right_hip, right_knee]
+
+state_order:
+  - tucked
+  - driving
+  - extended
+
+states:
+  extended:
+    condition: "angle > 160"
+    description: "Bacak düz"
+  
+  driving:
+    condition: "angle > 90 and angle <= 160"
+    description: "Diz ileri"
+  
+  tucked:
+    condition: "angle <= 90"
+    description: "Diz göğüse"
+
+# Additional angles for movement validation
+validate_angles:
+  body_line_check:
+    points: [left_shoulder, left_hip, left_ankle]
+    description: "Vücut hattı (plank pozisyon kontrolü)"
+  arm_check:
+    points: [left_shoulder, left_elbow, left_wrist]
+    description: "Kol açısı (üst vücut stabilitesi)"
+
+# Movement validation — rejects non-mountain-climber movements
+validation:
+  body_straight:
+    condition: "body_line_check > 155"
+    description: "Vücut plank pozisyonunda kalmalı"
+  arms_stable:
+    condition: "arm_check > 150"
+    description: "Kollar düz kalmalı"
+
+counter:
+  trigger_state: tucked
+  from_state: driving
+
+min_rep_duration: 0.2
+
+feedback:
+  hips_high:
+    condition: "angle < 70"
+    message: "حافظ على مستوى الورك — لا ترفعه للأعلى."
+    severity: info
+
+visualization:
+  lines:
+    - points: [left_hip, left_knee]
+      color: [255, 0, 0]
+      thickness: 4
+
+smoothing:
+  enabled: true
+  window: 3

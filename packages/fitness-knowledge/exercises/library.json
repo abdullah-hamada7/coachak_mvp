@@ -1,0 +1,10 @@
+{
+  "exercises": [
+    {"id": "goblet_squat", "name": "Goblet Squat", "pattern": "squat", "muscles": ["quads", "glutes"], "equipment": ["dumbbell", "kettlebell"], "contraindications": []},
+    {"id": "bodyweight_squat", "name": "Bodyweight Squat", "pattern": "squat", "muscles": ["quads", "glutes"], "equipment": ["bodyweight"], "contraindications": []},
+    {"id": "push_up", "name": "Push-Up", "pattern": "push", "muscles": ["chest", "triceps"], "equipment": ["bodyweight"], "contraindications": ["wrist"]},
+    {"id": "dumbbell_curl", "name": "Dumbbell Bicep Curl", "pattern": "isolation", "muscles": ["biceps"], "equipment": ["dumbbell"], "contraindications": []},
+    {"id": "plank", "name": "Plank", "pattern": "core", "muscles": ["core"], "equipment": ["bodyweight"], "contraindications": []},
+    {"id": "deadlift", "name": "Conventional Deadlift", "pattern": "hinge", "muscles": ["back", "hamstrings"], "equipment": ["barbell"], "contraindications": ["lower_back"]}
+  ]
+}

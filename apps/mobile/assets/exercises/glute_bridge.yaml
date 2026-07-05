@@ -1,0 +1,78 @@
+# Glute Bridge Exercise Definition
+name: glute_bridge
+display_name: "Glute Bridge"
+type: repetition
+camera_mode: auto
+
+target_muscles:
+  - Glutes
+  - Hamstrings
+  - Core
+equipment: "Bodyweight"
+difficulty: beginner
+default_reps: 12
+default_sets: 3
+description: "Hip bridge for glute activation"
+
+angles:
+  primary:
+    points: [left_shoulder, left_hip, left_knee]
+    description: "Kalça açısı"
+
+state_order:
+  - up
+  - lift
+  - down
+
+states:
+  down:
+    condition: "angle < 120"
+    description: "Kalça yerde"
+  
+  lift:
+    condition: "angle >= 120 and angle < 165"
+    description: "Kaldırma aşaması"
+  
+  up:
+    condition: "angle >= 165"
+    description: "Tam uzanım"
+
+# Additional angles for movement validation
+validate_angles:
+  left_elbow_check:
+    points: [left_shoulder, left_elbow, left_wrist]
+    description: "Sol dirsek açısı (kol hareketi tespiti)"
+  right_elbow_check:
+    points: [right_shoulder, right_elbow, right_wrist]
+    description: "Sağ dirsek açısı (kol hareketi tespiti)"
+
+# Movement validation — rejects non-glute-bridge movements
+validation:
+  arms_extended:
+    condition: "left_elbow_check > 150 and right_elbow_check > 150"
+    description: "Kollar düz kalmalı (glute bridge için)"
+
+counter:
+  trigger_state: up
+  from_state: lift
+
+min_rep_duration: 0.8
+
+feedback:
+  incomplete:
+    condition: "angle < 160"
+    message: "اضغط المؤخرة ومدّ الورك بالكامل."
+    severity: info
+
+visualization:
+  lines:
+    - points: [left_shoulder, left_hip]
+      color: [255, 105, 180]
+      thickness: 4
+    - points: [left_hip, left_knee]
+      color: [255, 105, 180]
+      thickness: 4
+
+smoothing:
+  enabled: true
+  window: 3

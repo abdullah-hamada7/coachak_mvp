@@ -1,0 +1,48 @@
+name: quad_sets
+display_name: "Quad Sets"
+type: duration
+camera_mode: auto
+
+target_muscles:
+  - Quadriceps
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 5
+default_sets: 3
+target_duration: 5
+hold_state: hold
+description: "Isometric quad contraction with knee extension hold"
+
+angles:
+  primary:
+    points: [left_hip, left_knee, left_ankle]
+
+state_order:
+  - rest
+  - hold
+  - release
+
+states:
+  rest:
+    condition: "angle < 170"
+  hold:
+    condition: "angle >= 170"
+  release:
+    condition: "angle > 160 and angle < 170"
+
+feedback:
+  press_knee:
+    condition: "angle > 165 and angle < 175"
+    message: "اضغط بظهر الركبة للأسفل وشدّ الفخذ."
+    severity: info
+
+form_score:
+  ideal_angles:
+    primary: 175
+  tempo_range:
+    min: 3.0
+    max: 10.0
+
+smoothing:
+  enabled: true
+  window: 3

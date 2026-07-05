@@ -1,0 +1,72 @@
+name: ankle_pump
+display_name: "Ankle Pump"
+type: repetition
+angle_strategy: primary
+camera_mode: auto
+
+target_muscles:
+  - Calves
+  - Ankle Mobility
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 20
+default_sets: 3
+description: "Dorsiflexion and plantarflexion for DVT prophylaxis"
+
+angles:
+  primary:
+    points: [left_knee, left_ankle, left_hip]
+
+state_order:
+  - plantar
+  - mid
+  - dorsi
+
+states:
+  plantar:
+    condition: "angle > 115"
+  mid:
+    condition: "angle > 95 and angle <= 115"
+  dorsi:
+    condition: "angle <= 95"
+
+# Additional angles for movement validation
+validate_angles:
+  elbow_check:
+    points: [left_shoulder, left_elbow, left_wrist]
+    description: "Dirsek açısı (kol hareketi tespiti)"
+  knee_check:
+    points: [left_hip, left_knee, left_ankle]
+    description: "Diz açısı (diz hareketi tespiti)"
+
+# Movement validation — rejects non-ankle-pump movements
+validation:
+  arms_extended:
+    condition: "elbow_check > 150"
+    description: "Kollar düz kalmalı"
+  knee_straight:
+    condition: "knee_check > 170"
+    description: "Diz bükülmemeli"
+
+counter:
+  trigger_state: dorsi
+  from_state: mid
+
+min_rep_duration: 0.4
+
+feedback:
+  full_range:
+    condition: "angle > 100 and angle < 110"
+    message: "حرّك الكاحل عبر المدى الكامل بإيقاع ثابت."
+    severity: info
+
+form_score:
+  ideal_angles:
+    primary: 90
+  tempo_range:
+    min: 0.5
+    max: 2.0
+
+smoothing:
+  enabled: true
+  window: 2

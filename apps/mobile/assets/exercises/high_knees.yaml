@@ -1,0 +1,83 @@
+# High Knees Exercise Definition
+name: high_knees
+display_name: "High Knees"
+type: repetition
+camera_mode: auto
+bilateral: true
+sides:
+  - left
+  - right
+
+target_muscles:
+  - Hip Flexors
+  - Quads
+  - Core
+equipment: "Bodyweight"
+difficulty: beginner
+default_reps: 20
+default_sets: 3
+description: "Running in place with high knee lifts"
+
+angles:
+  left:
+    points: [left_shoulder, left_hip, left_knee]
+  right:
+    points: [right_shoulder, right_hip, right_knee]
+
+state_order:
+  - up
+  - lift
+  - down
+
+states:
+  down:
+    condition: "angle > 150"
+    description: "Bacak düz"
+  
+  lift:
+    condition: "angle > 100 and angle <= 150"
+    description: "Kaldırma"
+  
+  up:
+    condition: "angle <= 100"
+    description: "Diz yukarıda"
+
+# Additional angles for movement validation
+validate_angles:
+  body_upright:
+    points: [left_shoulder, left_hip, left_ankle]
+    description: "Vücut diklik kontrolü"
+  arm_check:
+    points: [left_shoulder, left_elbow, left_wrist]
+    description: "Kol açısı (üst vücut stabilitesi)"
+
+# Movement validation — rejects non-high-knees movements
+validation:
+  body_straight:
+    condition: "body_upright > 160"
+    description: "Vücut dik kalmalı"
+  arms_stable:
+    condition: "arm_check > 150"
+    description: "Kollar düz kalmalı"
+
+counter:
+  trigger_state: up
+  from_state: lift
+
+min_rep_duration: 0.2
+
+feedback:
+  knee_low:
+    condition: "angle > 110"
+    message: "ارفع ركبتك أعلى — قريباً من الصدر."
+    severity: info
+
+visualization:
+  lines:
+    - points: [left_hip, left_knee]
+      color: [255, 0, 0]
+      thickness: 4
+
+smoothing:
+  enabled: true
+  window: 3
