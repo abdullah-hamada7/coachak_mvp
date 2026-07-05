@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+# Prevent obvious secret leaks from being committed.
+if git diff --cached --name-only --diff-filter=ACMR | grep -E '(\.env|\.pem|\.key|\.p12|\.pfx)$' >/dev/null 2>&1; then
+  echo "Refusing to commit secret-bearing files. Use .env.example and keep real secrets in your local environment." >&2
+  exit 1
+fi
+
+if git diff --cached --name-only -- . ':(exclude).githooks/pre-commit' | xargs -r grep -nE 'AIza[0-9A-Za-z\\-_]{10,}|sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{36}|E7DPhrEArMC6cwZ7CL8KhE7ieEIS0gJSohOixtLE' >/dev/null 2>&1; then
+  echo "Possible secret detected in staged changes. Remove it before committing." >&2
+  exit 1
+fi

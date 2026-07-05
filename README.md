@@ -54,6 +54,12 @@ python -m pytest tests/ -v
 
 See `services/api/.env.example`.
 
+## Secrets and Configuration
+
+- Keep real secrets in local `.env` files or your CI secret manager.
+- Never commit real API keys, tokens, or certificates.
+- The repository includes a local pre-commit hook in `.githooks/pre-commit` to block obvious secret leaks before commit.
+
 ## API Docs
 
 http://localhost:8000/docs
